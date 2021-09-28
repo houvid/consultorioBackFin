@@ -3,8 +3,11 @@ package com.consultorioBackFin.consultorio.controller;
 import com.consultorioBackFin.consultorio.dto.Mensaje;
 import com.consultorioBackFin.consultorio.dto.PacienteDto;
 import com.consultorioBackFin.consultorio.entity.Paciente;
+import com.consultorioBackFin.consultorio.security.jwt.JwtEntryPoint;
 import com.consultorioBackFin.consultorio.service.PacienteService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import java.util.List;
 @RequestMapping("/paciente")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PacienteController {
+    private final static Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
     @Autowired
     PacienteService pacienteService;
     @GetMapping("/lista")
@@ -54,8 +58,30 @@ public class PacienteController {
 
         if (pacienteService.existByCedula(pacienteDto.getCedula()))
             return new ResponseEntity<>(new Mensaje("El paciente ya existe  "), HttpStatus.BAD_REQUEST);
-
-        Paciente paciente = new Paciente (pacienteDto.getCedula(),pacienteDto.getNombre(), pacienteDto.getApellido());
+        logger.info(String.valueOf(pacienteDto));
+        Paciente paciente = new Paciente (
+                pacienteDto.getCedula(),
+                pacienteDto.getNombre(),
+                pacienteDto.getApellido(),
+                pacienteDto.getSexo(),
+                pacienteDto.getNivelEscolaridad(),
+                pacienteDto.getOcupacion(),
+                pacienteDto.getInstitucion(),
+                pacienteDto.getFechaNacimiento(),
+                pacienteDto.getLugarNacimiento(),
+                pacienteDto.getDireccion(),
+                pacienteDto.getMunicipio(),
+                pacienteDto.getTelefono(),
+                pacienteDto.getCelular(),
+                pacienteDto.getEmail(),
+                pacienteDto.getEstadoCivil(),
+                pacienteDto.getEstrato(),
+                pacienteDto.getTarifa(),
+                pacienteDto.getNombreAcudiente(),
+                pacienteDto.getEdadAcudiente(),
+                pacienteDto.getTelefonoAcudiente(),
+                pacienteDto.getCelularAcudiente(),
+                pacienteDto.getDireccionAcudiente());
         pacienteService.save(paciente);
         return new ResponseEntity<>(new Mensaje("Paciente creado exitosamente"), HttpStatus.OK);
     }
