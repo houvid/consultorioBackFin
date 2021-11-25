@@ -1,5 +1,7 @@
 package com.consultorioBackFin.consultorio.dto;
 
+import com.consultorioBackFin.consultorio.entity.AntecedentesPaciente;
+import com.consultorioBackFin.consultorio.entity.Historia;
 import com.sun.istack.NotNull;
 
 import java.util.Date;
@@ -30,11 +32,19 @@ public class PacienteDto {
     private String telefonoAcudiente;
     private String celularAcudiente;
     private String direccionAcudiente;
+    private AntecedentesPaciente antecedentesPaciente;
+    private Historia historia;
+    private String usuarioRegistra;
 
     public PacienteDto() {
     }
 
-    public PacienteDto(String cedula, String nombre, String apellido, String sexo, String nivelEscolaridad, String ocupacion, String institucion, Date fechaNacimiento, String lugarNacimiento, String direccion, String municipio, String telefono, String celular, String email, String estadoCivil, String estrato, int tarifa, String nombreAcudiente, String edadAcudiente, String telefonoAcudiente, String celularAcudiente, String direccionAcudiente) {
+    public PacienteDto(String cedula, String nombre, String apellido, String sexo, String nivelEscolaridad,
+                       String ocupacion, String institucion, Date fechaNacimiento, String lugarNacimiento,
+                       String direccion, String municipio, String telefono, String celular, String email,
+                       String estadoCivil, String estrato, int tarifa, String nombreAcudiente, String edadAcudiente,
+                       String telefonoAcudiente, String celularAcudiente, String direccionAcudiente, AntecedentesPaciente antecedentesPaciente,
+                       Historia historia, String usuarioRegistra) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -57,6 +67,17 @@ public class PacienteDto {
         this.telefonoAcudiente = telefonoAcudiente;
         this.celularAcudiente = celularAcudiente;
         this.direccionAcudiente = direccionAcudiente;
+        this.antecedentesPaciente = antecedentesPaciente;
+        this.usuarioRegistra = usuarioRegistra;
+        this.historia = historia;
+    }
+
+    public String getUsuarioRegistra() {
+        return usuarioRegistra;
+    }
+
+    public void setUsuarioRegistra(String usuarioRegistra) {
+        this.usuarioRegistra = usuarioRegistra;
     }
 
     public String getCedula() {
@@ -233,5 +254,21 @@ public class PacienteDto {
 
     public void setDireccionAcudiente(String direccionAcudiente) {
         this.direccionAcudiente = direccionAcudiente;
+    }
+
+    public AntecedentesPaciente getAntecedentesPaciente() {
+        return antecedentesPaciente;
+    }
+
+    public void setAntecedentesPaciente(AntecedentesPaciente antecedentesPaciente) {
+        this.antecedentesPaciente = antecedentesPaciente;
+    }
+
+    public Historia getHistoria() {
+        return historia;
+    }
+
+    public void setHistoria(Historia historia) {
+        this.historia = historia;
     }
 }

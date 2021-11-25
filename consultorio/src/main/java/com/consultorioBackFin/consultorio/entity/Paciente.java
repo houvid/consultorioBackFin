@@ -1,44 +1,99 @@
 package com.consultorioBackFin.consultorio.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Column(name = "cedula")
     private String cedula;
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "sexo")
     private String sexo;
+
+    @Column(name = "nivelEscolaridad")
     private String nivelEscolaridad;
+
+    @Column(name = "ocupacion")
     private String ocupacion;
+
+    @Column(name = "institucion")
     private String institucion;
+
+    @Column(name = "fechaNacimiento")
     private Date fechaNacimiento;
+
+    @Column(name = "lugarNacimiento")
     private String lugarNacimiento;
+
+    @Column(name = "direccion")
     private String direccion;
+
+    @Column(name = "municipio")
     private String municipio;
+
+    @Column(name = "telefono")
     private String telefono;
+
+    @Column(name = "celular")
     private String celular;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "estadoCivil")
     private String estadoCivil;
+
+    @Column(name = "estrato")
     private String estrato;
+
+    @Column(name = "tarifa")
     private int tarifa;
+
+    @Column(name = "nombreAcudiente")
     private String nombreAcudiente;
+
+    @Column(name = "edadAcudiente")
     private String edadAcudiente;
+
+    @Column(name = "telefonoAcudiente")
     private String telefonoAcudiente;
+
+    @Column(name = "celularAcudiente")
     private String celularAcudiente;
+
+    @Column(name = "direccionAcudiente")
     private String direccionAcudiente;
+
+    @JoinColumn(name = "fk_paciente", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<AntecedentesPaciente> antecedentes = new ArrayList<>();
+
+    @JoinColumn(name = "fk_paciente", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Historia> historia = new ArrayList<>();
+
+    @Column(name = "usuarioRegistra")
+    private String usuarioRegistra;
 
     public Paciente(){
         
     }
 
-    public Paciente(String cedula, String nombre, String apellido, String sexo, String nivelEscolaridad, String ocupacion, String institucion, Date fechaNacimiento, String lugarNacimiento, String direccion, String municipio, String telefono, String celular, String email, String estadoCivil, String estrato, int tarifa, String nombreAcudiente, String edadAcudiente, String telefonoAcudiente, String celularAcudiente, String direccionAcudiente) {
+    public Paciente(String cedula, String nombre, String apellido, String sexo, String nivelEscolaridad, String ocupacion, String institucion, Date fechaNacimiento, String lugarNacimiento, String direccion, String municipio, String telefono, String celular, String email, String estadoCivil, String estrato, int tarifa, String nombreAcudiente, String edadAcudiente, String telefonoAcudiente, String celularAcudiente, String direccionAcudiente, String usuarioRegistra) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -61,7 +116,18 @@ public class Paciente {
         this.telefonoAcudiente = telefonoAcudiente;
         this.celularAcudiente = celularAcudiente;
         this.direccionAcudiente = direccionAcudiente;
+        this.usuarioRegistra = usuarioRegistra;
     }
+
+    public String getUsuarioRegistra() {
+        return usuarioRegistra;
+    }
+
+    public void setUsuarioRegistra(String usuarioRegistra) {
+        this.usuarioRegistra = usuarioRegistra;
+    }
+
+
 
     public int getId() {
         return id;
@@ -245,5 +311,21 @@ public class Paciente {
 
     public void setDireccionAcudiente(String direccionAcudiente) {
         this.direccionAcudiente = direccionAcudiente;
+    }
+
+    public List<AntecedentesPaciente> getAntecedentes() {
+        return antecedentes;
+    }
+
+    public void setAntecedentes(List<AntecedentesPaciente> antecedentes) {
+        this.antecedentes = antecedentes;
+    }
+
+    public List<Historia> getHistoria() {
+        return historia;
+    }
+
+    public void setHistoria(List<Historia> historia) {
+        this.historia = historia;
     }
 }

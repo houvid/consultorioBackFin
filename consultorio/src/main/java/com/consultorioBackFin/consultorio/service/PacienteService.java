@@ -16,8 +16,8 @@ public class PacienteService {
     @Autowired
     PacienteRepository pacienteRepository;
 
-    public List<Paciente> list () {
-             return pacienteRepository.findAll();
+    public List<Paciente> list (String usuarioRegistra) {
+             return pacienteRepository.findAllByUsuarioRegistra(usuarioRegistra);
     }
 
     public Optional<Paciente> getOne(int id){

@@ -1,9 +1,13 @@
 package com.consultorioBackFin.consultorio.controller;
 
+import com.consultorioBackFin.consultorio.dto.HistoriaDto;
 import com.consultorioBackFin.consultorio.dto.Mensaje;
 import com.consultorioBackFin.consultorio.dto.PacienteDto;
+import com.consultorioBackFin.consultorio.entity.Historia;
 import com.consultorioBackFin.consultorio.entity.Paciente;
+import com.consultorioBackFin.consultorio.repository.HistoriaRepository;
 import com.consultorioBackFin.consultorio.security.jwt.JwtEntryPoint;
+import com.consultorioBackFin.consultorio.service.HistoriaService;
 import com.consultorioBackFin.consultorio.service.PacienteService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,9 +28,11 @@ public class PacienteController {
     private final static Logger logger = LoggerFactory.getLogger(JwtEntryPoint.class);
     @Autowired
     PacienteService pacienteService;
-    @GetMapping("/lista")
-    public ResponseEntity<List<Paciente>> list(){
-        List<Paciente> list = pacienteService.list();
+    @Autowired
+    HistoriaService historiaService;
+    @GetMapping("/lista/{usuarioRegistra}")
+    public ResponseEntity<List<Paciente>> list(@PathVariable("usuarioRegistra") String usuarioRegistra){
+        List<Paciente> list = pacienteService.list(usuarioRegistra);
         return new ResponseEntity<List<Paciente>>(list, HttpStatus.OK);
     }
 
@@ -81,9 +88,22 @@ public class PacienteController {
                 pacienteDto.getEdadAcudiente(),
                 pacienteDto.getTelefonoAcudiente(),
                 pacienteDto.getCelularAcudiente(),
-                pacienteDto.getDireccionAcudiente());
+                pacienteDto.getDireccionAcudiente(),
+                pacienteDto.getUsuarioRegistra());
         pacienteService.save(paciente);
         return new ResponseEntity<>(new Mensaje("Paciente creado exitosamente"), HttpStatus.OK);
+    }
+    @PutMapping("/registroHistoria/{id}")
+    public ResponseEntity<?> registroHistoria (@PathVariable("id") int id ,@RequestBody Historia historia){
+
+        Paciente paciente = pacienteService.getOne(id).get();
+
+        List<Historia> historiaList = paciente.getHistoria();
+        historiaList.add(historia);
+        paciente.setHistoria(historiaList);
+        logger.info(String.valueOf(paciente.getHistoria().get(0)));
+        pacienteService.save(paciente);
+        return new ResponseEntity<>(new Mensaje("Se agregó historia clinica exitosamente"), HttpStatus.OK);
     }
 
     @PutMapping ("/update/{id}")
@@ -102,7 +122,6 @@ public class PacienteController {
         paciente.setCedula(pacienteDto.getCedula());
         paciente.setNombre(pacienteDto.getNombre());
         paciente.setApellido(pacienteDto.getApellido());
-
         pacienteService.save(paciente);
         return new ResponseEntity<>(new Mensaje("Paciente Actualizado exitosamente"), HttpStatus.OK);
     }
